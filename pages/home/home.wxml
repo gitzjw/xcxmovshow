@@ -1,0 +1,85 @@
+<block wx:if="{{showLoading}}">
+  <view class="page-loading">
+    <image class="img-loading" src="/image/1.gif" />
+    <text>正在玩命加载中...</text>
+  </view>
+</block>
+<block wx:else>
+  <scroll-view class="sv" scroll-y="{{true}}" lower-threshold="8px" bindscrolltolower="scrolltolower">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+      <block wx:for="{{bannerUrls}}" wx:key="">
+        <swiper-item wx:if="{{item.type == 'appthread'}}" data-id="{{item.link}}" bindtap="redirect">
+          <image src="{{item.coverpath}}" class="slide-image" />
+        </swiper-item>
+        <swiper-item wx:if="{{item.type == 'tagdetail'}}" data-id="{{item.link}}" bindtap="redirectActivity">
+          <image src="{{item.coverpath}}" class="slide-image" />
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="circle">
+      <view data-id="{{2}}" bindtap="forumNew">
+        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/gou.png">汪星人</image>
+      </view>
+      <view data-id="{{2}}" bindtap="forumNew">
+        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/mao.png">喵星人</image>
+      </view>
+      <view bindtap="publish">
+        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/qita.png">发帖</image>
+      </view>
+      <view bindtap="publish">
+        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/pz.png">拍照</image>
+      </view>
+    </view>
+    <block wx:for="{{listzz}}" wx:key="">
+      <view data-id="{{item.tid}}" bindtap="redirect" class="mod-list">
+        <view class="page_t1">
+          <view class="wrapper">
+            <view>
+              <image src="{{item.userface}}" style="width: 40px; height: 40px;border-radius:20px;" />
+            </view>
+            <view style="flex-direction: column;">
+              <view style="font-size:13px; color:black;padding:5px 10px">{{item.author}}</view>
+              <view style="font-size:11px; color:#999;padding:0px 10px">{{}}</view>
+            </view>
+            <view style="flex-direction: column;">
+              <view style="font-size:13px; color:black;padding:5px 10px"></view>
+              <view style="font-size:11px; color:#999;padding:0px 10px">阅读：{{item.views}}</view>
+            </view>
+            <view style="flex-direction: column;">
+              <view style="font-size:13px; color:black;padding:5px 10px"></view>
+              <view style="font-size:11px; color:#999;padding:0px 10px">{{item.lastpost}}</view>
+            </view>
+          </view>
+        </view>
+        <view class="subject">
+          <view>{{item.subject}}</view>
+        </view>
+        <view class="message">
+          <view style="Line-height:20px">{{item.message}}</view>
+        </view>
+        <view class="page_imgs" wx:if="{{item.pics[0]}}">
+          <view>
+            <image src="{{item.pics[0]}}" binderror="binderrorimg" data-errorimg="{{index}}" data-errorpic="0" style=" width:{{wt_img}}px;height:{{wt_img}}px" />
+          </view>
+          <view>
+            <image src="{{item.pics[1]}}"  binderror="binderrorimg" data-errorimg="{{index}}" data-errorpic="1" style=" width:{{wt_img}}px;height:{{wt_img}}px" />
+          </view>
+          <view>
+            <image src="{{item.pics[2]}}"  binderror="binderrorimg" data-errorimg="{{index}}" data-errorpic="2" style=" width:{{wt_img}}px;height:{{wt_img}}px" />
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{showMore}}">
+      <view class="page-loading">
+        <image class="img-loading" src="/image/1.gif" />
+        <text>正在玩命加载中...</text>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="page-loading">
+        <text>没有更多内容了</text>
+      </view>
+    </block>
+  </scroll-view>
+</block>

@@ -1,0 +1,35 @@
+.auto{
+  display: flex;
+  flex-wrap: nowrap;
+}
+.page_imgs {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 10PX;
+}
+
+.TB {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  padding-top: 10PX;
+}
+
+.title {
+  margin-top: 15px 0px 15px 0px;
+  font-size: 14px;
+  height: 30px;
+  border-bottom: 1px solid darkgrey;
+}
+
+.text {
+  padding: 15px 0px 30px 0px;
+  font-size: 14px;
+  border-bottom: 1px solid darkgrey;
+}
+
+.qz {
+  padding: 10px 0px 10px 0px;
+  font-size: 11px;
+  border-bottom: 1px solid darkgrey;
+}

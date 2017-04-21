@@ -1,0 +1,103 @@
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.list {
+  background: #fff;
+  margin-top: 0rpx;
+}
+
+.list .item {
+  padding: 20px 15px;
+  font-size: 14px;
+  color: #333;
+  position: relative;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.list .item::last-child {
+  border: none;
+}
+
+.list .item image {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.list .item .jump {
+  position: absolute;
+  right: 20px;
+  color: #999;
+}
+
+.sx {
+  width: 48px;
+  height: 48px;
+}
+
+.input {
+  padding-top: 300rpx;
+  width: 100%;
+}
+
+.input input {
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px #d9d9d9 solid;
+  border-top: 1px #d9d9d9 solid;
+  padding: 20rpx 50rpx;
+}
+
+.section {
+  padding-top: 20rpx;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.cityheader {
+  
+  padding: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+.nc{
+   display: flex;
+  flex-wrap: nowrap;
+}
+
+

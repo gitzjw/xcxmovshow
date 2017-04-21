@@ -1,0 +1,46 @@
+{
+  "pages":[
+    "pages/home/home",
+     "pages/publish/index",
+    "pages/detail/detail",
+    "pages/activity/activity",
+    "pages/classify/classify",
+    "pages/forumList/forumList",
+    "pages/settlement/index",
+    "pages/member/member",
+    "pages/mythreadNew/mythreadNew",
+    "pages/index/index"
+    
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#999",
+    "navigationBarTitleText": "猫咪有约",
+    "navigationBarTextStyle":"#fff"
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/home/home",
+      "iconPath":"image/ing.png",
+      "selectedIconPath":"image/ing-active.png",
+      "text": "首页"
+    },
+    {
+      "pagePath": "pages/classify/classify",
+      "iconPath":"image/nav-list.png",
+      "selectedIconPath":"image/nav-listHL.png",
+      "text": "论坛"
+    },
+    {
+      "pagePath": "pages/index/index",
+      "iconPath":"image/account.png",
+      "selectedIconPath":"image/accountHL.png",
+      "text": "我的"
+    }]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}

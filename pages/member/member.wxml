@@ -1,0 +1,47 @@
+
+<!--index.wxml-->
+<form bindsubmit="formSubmit">
+  <view>
+    <view bindtap="bindimg" class="userinfo">
+      <image class="userinfo-avatar" src="{{uc_avatarUrl}}" background-size="cover"></image>
+    
+    </view>
+  </view>
+  <view class="list">
+    <view class="item nc" bindtap="user">
+      <image src="../../image/zl.png" />社区昵称：
+      <input disabled="true" name="username" value="{{username}}" maxlength="15" />
+    </view>
+    <view class="item">
+      <picker bindchange="sexChange" value="{{sex}}" range="{{sexArray}}">
+        <view class="picker">
+          <image src="../../image/dingdan.jpg" />性 别 ：{{sexArray[sex]}}
+        </view>
+      </picker>
+    </view>
+    <view class="item" bindtap="open">
+      <image src="../../image/ding.png" />所在地:
+      <text>{{province}}-{{city}}-{{county}} </text>
+    </view>
+  </view>
+  <view wx:if="{{!condition}}">
+    <button formType="submit" style="font-size:14px;margin-top:5px;height:30px">保存更新</button>
+    </view>
+</form>
+<view wx:if="{{condition}}" class="citypicker">
+  <view class="cityheader">
+    <view bindtap="open" class="city-cancel">取消</view>
+    <view bindtap="open" class="city-true">确定</view>
+  </view>
+  <picker-view indicator-style="height: 50px;" style="width: 100%; height: 300px;" value="{{value}}" bindchange="bindChange" class="citybody">
+    <picker-view-column>
+      <view wx:for="{{provinces}}" wx:key="item" style="line-height: 50px;text-align: center;">{{item}}</view>
+    </picker-view-column>
+    <picker-view-column>
+      <view wx:for="{{citys}}" wx:key="item" style="line-height: 50px;text-align: center;">{{item}}</view>
+    </picker-view-column>
+    <picker-view-column>
+      <view wx:for="{{countys}}" wx:key="item" style="line-height: 50px;text-align: center;">{{item}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>

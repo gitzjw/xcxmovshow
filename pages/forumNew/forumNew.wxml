@@ -1,0 +1,43 @@
+<view class="swiper-tab">
+ <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">汪星人</view>
+ <view class="swiper-tab-list {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">喵星人</view>
+ <view class="swiper-tab-list {{currentTab==2 ? 'on' : ''}}" data-current="2" bindtap="swichNav">其他星</view>
+</view>
+<swiper current="{{currentTab}}" class="swiper-box" duration="300" style="height:{{winHeight  - 31}}px" bindchange="bindChange">
+ <swiper-item >
+	  <view wx:for="{{list.w}}" wx:for-item="w" class="list"  >	
+		<view data-id="{{w.fid}}" bindtap="forumList" class="warp">
+			<view >
+				<image style="height:40px;width:40px" src="{{w.ico}}"> </image>
+			</view>
+			<view class="name"> 
+				{{w.name}}
+			</view>	
+		</view>		  		
+	  </view>
+ </swiper-item>
+ <swiper-item >
+	  <view wx:for="{{list.m}}" wx:for-item="m" class="list" >	
+	  	<view data-id="{{m.fid}}" bindtap="forumList" class="warp">
+			<view >
+				<image style="height:40px;width:40px" src="{{m.ico}}"> </image>
+			</view>
+			<view class="name"> 
+				{{m.name}}
+			</view>	
+		</view>	  		
+	  </view>
+ </swiper-item>
+ <swiper-item >
+	 <view wx:for="{{list.q}}" wx:for-item="q" class="list" >	
+		  <view data-id="{{q.fid}}" bindtap="forumList" class="warp">
+			<view >
+				<image style="height:40px;width:40px" src="{{q.ico}}"> </image>
+			</view>
+			<view class="name"> 
+				{{q.name}}
+			</view>		  		
+		  </view>
+	</view>  
+ </swiper-item>
+ </swiper>

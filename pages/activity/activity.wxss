@@ -1,0 +1,39 @@
+.text{
+	font-size:13px;
+}
+.pad{
+	padding:10px 15px;
+}
+.mod-list{
+	border-radius:10px;
+	flex-direction: column;
+	border:1px solid #ccc;
+	box-sizing:border-box;
+	Margin:10px; 
+}
+.wrapper{
+	display:flex;
+	flex-wrap:nowrap;
+
+}
+
+.subject{
+	font-size:14px;
+	box-sizing:border-box;
+	height:20px;
+	align-items:center;
+}
+
+.message{
+	font-size:12px;
+	color:#999;
+	box-sizing:border-box;
+	padding:5px 0px ;
+}
+
+.page_img{
+	width: 100px; 
+	height: 100px;
+	Margin:10px 10px 5px 0px; 
+	border-radius:5px;
+}

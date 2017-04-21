@@ -1,0 +1,68 @@
+.page{
+	padding:10px 15px;
+}
+
+
+.page_t1{
+	padding:10px 0px;
+}
+.wrapper{
+	display:flex;
+	flex-wrap:nowrap;
+}
+
+.subject{
+	font-size:14px;
+	box-sizing:border-box;
+	height:20px;
+	align-items:center;
+}
+
+.message{
+	padding-top:15px;
+	font-size:12px;
+	box-sizing:border-box;
+	
+}
+
+.page_img{
+	mode: aspectFit;
+	width:353px;
+	Margin-top:10px; 
+	border-radius:5px;
+}
+
+video{
+	width:350px;
+	height:350px;
+}
+.postList{
+	margin-top:10px;
+	border-bottom:1px solid #ccc;
+}
+
+.posttotal{
+	border-top:3px solid #ccc;
+	padding:10px 0px 34px 0px
+}
+
+.footer{
+	display:flex;
+	flex-wrap:nowrap;
+	justify-content:space-around;
+	background-color: white;
+	border-top:1px solid #ccc;
+	position: fixed;
+    height: 38px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.input{
+	margin-top: 5px;
+	border-radius:5px;
+	width: 70%;
+	height: 70%;
+	border:1px solid #ccc;
+}
+

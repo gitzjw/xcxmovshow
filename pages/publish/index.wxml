@@ -1,0 +1,52 @@
+<view style="padding:15px">
+  <form bindsubmit="formSubmit">
+    <view class="title">
+      <input name="title" maxlength="20" placeholder="诱人的标题会有更多人看（必填）" />
+    </view>
+    <view class="text">
+      <textarea bindblur="bindTextAreaBlur" maxlength="1000" name="text" auto-height placeholder="好的内容会提高成为精华帖的几率（必填）" />
+    </view>
+    <view class="qz">
+      <picker bindchange="bindPickerChange" range-key="name" value="{{name}}" range="{{forumNew}}">
+        <view>
+        选择发送的圈子 :  <text>{{forumNew_name}}</text>
+        </view>
+      
+      </picker>
+    </view>
+    <view class="page_imgs" wx:if="{{imgList}}">
+      <radio-group name="images" style="width:{{tb_img}}px;height:{{tb_img}}px;padding-left:10px">
+        <label>
+          <radio checked="true" value="{{imgsSrc}}" />
+        </label>
+      </radio-group>
+      <view wx:for="{{imgList}}" wx:key="ind" wx:for-item="img">
+        <image bindtap="previewImage" style="width:{{tb_img}}px;height:{{tb_img}}px;padding-left:10px" src="{{img}}"></image>
+      </view>
+    </view>
+    <view wx:if="{{video}}">
+      <radio-group name="video">
+        <label>
+          <radio checked="true" value="{{videoSrc}}" />
+        </label>
+      </radio-group>
+      <video src="{{videoSrc}}"></video>
+    </view>
+    <view class="TB">
+      <view bindtap="chooseImgs">
+        <image style="width:30px;height:30px" src="../../image/zp.png"></image>
+      </view>
+      <!--<view bindtap="chooseVideo">
+        <image style="width:30px;height:30px" src="../../image/sp.png"></image>
+      </view>-->
+      <view>
+        <picker bindchange="bindPickerChange" range-key="name" value="{{name}}" range="{{forumNew}}">
+          <image style="width:30px;height:30px " src="../../image/qz.png"></image>
+        </picker>
+      </view>
+    </view>
+    <view class="btn-area ">
+      <button formType="submit">发布</button>
+    </view>
+  </form>
+</view>
