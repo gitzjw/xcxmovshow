@@ -1,104 +1,109 @@
-<view class="page_t1">
-  <view class="wrapper">
+<view class="page">
+  <view class="page_t1">
+    <view class="wrapper">
+      <view>
+        <image src="{{threadinfo.userface}}" style="width: 40px; height: 40px;border-radius:20px;" />
+      </view>
+      <view style="flex-direction: column">
+        <view style="font-size:13px; color:black;padding:5px 10px">
+          <text>{{threadinfo.author}}</text>
+        </view>
+        <view style="font-size:11px; color:#999;padding:0px 10px">
+          <text>{{threadinfo.address}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="subject">
     <view>
-      <image src="{{threadinfo.userface}}" style="width: 40px; height: 40px;border-radius:20px;" />
-    </view>
-    <view style="flex-direction: column">
-      <view style="font-size:13px; color:black;padding:5px 10px">
-        <text>{{threadinfo.author}}</text>
-      </view>
-      <view style="font-size:11px; color:#999;padding:0px 10px">
-        <text>{{threadinfo.address}}</text>
-      </view>
+      <text>{{threadinfo.subject}}</text>
     </view>
   </view>
-</view>
-<view class="subject">
+  <view wx:for="{{threadinfo.message}}" wx:for-item="meslist" wx:key="">
+    <view wx:if="{{meslist.type == 'article'}}" class="message">
+      <text style="Line-height:20px">{{meslist.content}}</text>
+    </view>
+    <view wx:elif="{{meslist.type == 'image' }}">
+      <image style="width: {{windowWidth}}px; background-color: #eeeeee;" mode="widthFix" src="{{meslist.content}}"></image>
+    </view>
+    <view wx:elif="{{meslist.type == 'video' }}">
+      <video src="{{meslist.content}}" style="width:{{windowWidth}}px"></video>
+    </view>
+  </view>
+  <view class="wrapper" style="padding:15px 0px 0px 0px">
+    <view style="padding:5px 3px">
+      <image src="{{live}}" style="width:20px;height:20px;" />
+    </view>
+    <view wx:for="{{recommendarray}}" wx:for-item="liveList" wx:key="">
+      <view wx:if="{{index < 5}}" style="padding:0px 3px">
+        <image src="{{liveList.userface}}" style="width:35px;height:35px;border-radius:20px" />
+      </view>
+    </view>
+    <view style="padding:5px 3px;width:35px;height:25px;background-color:#EFE6D7;border-radius:20px; line-height:25px ;text-align:center">
+      {{recommend_add}}
+    </view>
+  </view>
+  <view style="font-size:12px;padding-bottom:10px">
+    <image src="{{bq}}" style="width:18px;height:18px;" /> {{threadinfo.forumname}}
+  </view>
+  <view class="posttotal">
+    <view style="font-size:13px;padding:10px 0px">
+      全部评论（{{posttotal}}）
+    </view>
+    <scroll-view scroll-y="{{scroll}}" style="height:{{postHeight}}px;"  bindscrolltolower="lower" scroll-into-view="" scroll-top="50">
+      <view wx:for="{{postarray}}" wx:for-item="postList" wx:key="" class="postList">
+        <view class="wrapper">
+          <view>
+            <image src="{{postList.userface}}" style="width:30px;height:30px;border-radius:20px;" />
+          </view>
+          <view style="flex-direction: column">
+            <view style="font-size:12px; color:black;padding:5px 10px">{{postList.username}}</view>
+            <view style="font-size:11px; color:#999;padding:0px 10px">{{postList.address}}</view>
+          </view>
+           <view >
+            <view style="font-size:11px; color:#999;padding:20px 0px 0px 10px">{{postList.addtime}}</view>
+          </view>
+        </view>
+        <view wx:for="{{postList.message}}" wx:for-item="postmesList" wx:key="" style="padding:0rpx 0rpx 15rpx 50rpx;font-size:12px; ">
+          <view>
+            <view wx:if="{{postmesList.type == 'article'}}" class="message">
+              <text>{{postmesList.content}}</text>
+            </view>
+            <view wx:if="{{postmesList.type == 'image' }}">
+              <image style="width: 500rpx; background-color: #eeeeee;" mode="widthFix" src="{{postmesList.content}}"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+      <block wx:if="{{showLoading}}">
+        <view class="page-loading">
+          <image class="img-loading" src="/image/1.gif" />
+          <text>正在玩命加载中...</text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="page-loading">
+          <text>没有更多内容了</text>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
   <view>
-    <text>{{threadinfo.subject}}</text>
-  </view>
-</view>
-<view wx:for="{{threadinfo.message}}" wx:for-item="meslist" wx:key="">
-  <view wx:if="{{meslist.type == 'article'}}" class="message">
-    <text style="Line-height:20px">{{meslist.content}}</text>
-  </view>
-  <view wx:elif="{{meslist.type == 'image' }}">
-    <image style="width: {{windowWidth}}px; background-color: #eeeeee;" mode="widthFix" src="{{meslist.content}}"></image>
-  </view>
-  <view wx:elif="{{meslist.type == 'video' }}">
-    <video src="{{meslist.content}}" style="width:{{windowWidth}}px"></video>
-  </view>
-</view>
-<view class="wrapper" style="padding:15px 0px 0px 0px">
-  <view style="padding:5px 3px">
-    <image src="{{live}}" style="width:20px;height:20px;" />
-  </view>
-  <view wx:for="{{recommendarray}}" wx:for-item="liveList" wx:key="">
-    <view wx:if="{{index < 5}}" style="padding:0px 3px">
-      <image src="{{liveList.userface}}" style="width:35px;height:35px;border-radius:20px" />
-    </view>
-  </view>
-  <view style="padding:5px 3px;width:35px;height:25px;background-color:#EFE6D7;border-radius:20px; line-height:25px ;text-align:center">
-    {{recommend_add}}
-  </view>
-</view>
-<view style="font-size:12px;padding-bottom:10px">
-  <image src="{{bq}}" style="width:18px;height:18px;" /> {{threadinfo.forumname}}
-</view>
-<view class="posttotal">
-  <view style="font-size:13px;padding:10px 0px">
-    全部评论（{{posttotal}}）
-  </view>
-  <scroll-view scroll-y="{{scroll}}" style="height:{{postHeight}}px;" bindscrolltolower="lower" scroll-into-view="" scroll-top="50">
-    <view wx:for="{{postarray}}" wx:for-item="postList" wx:key="" class="postList">
-      <view class="wrapper">
-        <view>
-          <image src="{{postList.userface}}" style="width:30px;height:30px;border-radius:20px;" />
+    <form bindsubmit="formSubmit">
+      <view class="footer ">
+        <input bindinput="bindinput" placeholder="回复楼主" name="content" value="{{value}}" class="input" />
+        <view wx:if="{{showClearBtn}}">
+          <button formType="submit" style="font-size:14px;margin-top:5px;height:30px">发布</button>
         </view>
-        <view style="flex-direction: column">
-          <view style="font-size:12px; color:black;padding:5px 10px">{{postList.author}}</view>
-          <view style="font-size:11px; color:#999;padding:0px 10px">{{postList.address}}</view>
-        </view>
-      </view>
-      <view wx:for="{{postList.message}}" wx:for-item="postmesList" wx:key="" style="padding:0rpx 0rpx 15rpx 100rpx;font-size:12px; ">
-        <view>
-          <view wx:if="{{postmesList.type == 'article'}}" class="message">
-            <text>{{postmesList.content}}</text>
+        <view wx:else>
+          <view wx:if="{{myrecommend}}" bindtap="praisePost">
+            <image src="../../image/live2.png" style="margin-top:5px;width:25px;height:25px"></image>
           </view>
-          <view wx:if="{{postmesList.type == 'image' }}">
-            <image style="width: 500rpx; background-color: #eeeeee;" mode="widthFix" src="{{postmesList.content}}"></image>
+          <view wx:else bindtap="praisePost">
+            <image src="../../image/icon-aixin1.png" style="margin-top:5px;width:25px;height:25px"></image>
           </view>
         </view>
       </view>
-    </view>
-    <block wx:if="{{showLoading}}">
-      <view class="page-loading">
-        <image class="img-loading" src="/image/1.gif" />
-        <text>正在玩命加载中...</text>
-      </view>
-    </block>
-    <block wx:else>
-      <view class="page-loading">
-        <text>没有更多内容了</text>
-      </view>
-    </block>
-  </scroll-view>
-</view>
-<view>
-  <form bindsubmit="formSubmit">
-    <view class="footer ">
-      <input bindinput="bindinput" placeholder="回复楼主" name="content" value="{{value}}" class="input" />
-      <view wx:if="{{showClearBtn}}">
-        <button formType="submit" style="font-size:14px;margin-top:5px;height:30px">发布</button>
-      </view>
-      <view wx:else>
-        <view wx:if="{{myrecommend}}" bindtap="praisePost">
-          <image src="../../image/live2.png" style="margin-top:5px;width:25px;height:25px"></image>
-        </view>
-        <view wx:else bindtap="praisePost">
-          <image src="../../image/icon-aixin1.png" style="margin-top:5px;width:25px;height:25px"></image>
-        </view>
-      </view>
-    </view>
-  </form>
+    </form>
+  </view>
 </view>

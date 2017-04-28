@@ -1,6 +1,7 @@
 var app = getApp();
 Page({
 	data: {
+		requireOnOff: true,
 		pn: 0,
 		list: [],
 		listzz: [],
@@ -35,13 +36,13 @@ Page({
 			url: '../publish/index'
 		})
 	},
-	forumNew: function (e) {
-		var id = e.currentTarget.dataset.id;
+	forumNew: function(e){
+    var id = e.currentTarget.dataset.id;
 
-		wx.navigateTo({
-			url: '../forumNew/forumNew?id=' + id
-		})
-	},
+    wx.navigateTo({
+      url:'../forumList/forumList?id='+id
+    })
+  },
 	redirectActivity: function (e) {
 		var id = e.currentTarget.dataset.id;
 
@@ -65,23 +66,12 @@ Page({
 	},
 	loadData: function (pn) {
 		var that = this;
-		var count = pn * 10;
+		var requireOnOff = that.data.requireOnOff;
 		var URL_threadIntroduceForIndexV4 = 'https://xcxbbs.movshow.com/index.php/home/index/digestList/pn/' + pn;
-		wx.request({
-			url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=indexbanner',
-			data: {
-
-			},
-			header: {
-				'content-type': 'json'
-			},
-			success: function (res) {
-				that.setData({
-					bannerUrls: res.data.array,
-				})
-			}
-		}),
-
+		if (requireOnOff) {
+			that.setData({
+				requireOnOff: false
+			})
 			wx.request({
 				url: URL_threadIntroduceForIndexV4,
 				data: {
@@ -104,16 +94,19 @@ Page({
 						})
 					}
 					//console.log(res.data)
+				},
+				complete: function () {
+					that.setData({
+						requireOnOff: true,
+					})
 				}
 			})
+		} else {
+			console.log("請求未完成，不在重複");
+		}
 	},
 	onLoad: function (options) {
 		var that = this
-		// app.getUserInfo(function (userInfo){
-		//     that.setData({
-		//           userInfo:userInfo,
-		//       });
-		// })
 		this.loadData(this.data.pn)
 	},
 	onReady: function () {
@@ -130,6 +123,20 @@ Page({
 					tb_img: tb_img,
 				});
 
+			}
+		}),
+		wx.request({
+			url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=indexbanner',
+			data: {
+
+			},
+			header: {
+				'content-type': 'json'
+			},
+			success: function (res) {
+				that.setData({
+					bannerUrls: res.data.array,
+				})
 			}
 		})
 	},

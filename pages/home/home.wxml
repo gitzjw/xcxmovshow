@@ -17,11 +17,11 @@
       </block>
     </swiper>
     <view class="circle">
-      <view data-id="{{2}}" bindtap="forumNew">
-        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/gou.png">汪星人</image>
+      <view data-id="4" bindtap="forumNew">
+        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/gou.png">七嘴八舌</image>
       </view>
-      <view data-id="{{2}}" bindtap="forumNew">
-        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/mao.png">喵星人</image>
+      <view data-id="18" bindtap="forumNew">
+        <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/mao.png">領養中心</image>
       </view>
       <view bindtap="publish">
         <image style="width:{{tb_img}}px;height:{{tb_img}}px" src="../../image/qita.png">发帖</image>

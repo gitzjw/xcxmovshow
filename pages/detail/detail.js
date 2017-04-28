@@ -3,10 +3,12 @@
 
 Page({
 	data: {
+		requireOnOff: true,
 		id: null,
 		pn: 0,
 		myrecommend: false,
 		windowWidth: 400,
+		windowHeight: 400,
 		scroll: true,
 		userInfo: null,
 		value: null,
@@ -14,7 +16,6 @@ Page({
 		bq: "../../image/bq.png",
 		threadinfo: {},
 		postarray: {},
-		postarrayLength: 0,
 		postHeight: 200,
 		posttotal: 0,
 		recommendarray: {},
@@ -77,20 +78,20 @@ Page({
 	// 	})
 
 	// },
-	// //输入时监控
-	// bindinput: function (event) {
-	// 	var that = this;
-	// 	var value = event.detail.value;
-	// 	if (value == "" || value == undefined || value == null) {
-	// 		that.setData({
-	// 			showClearBtn: false
-	// 		})
-	// 	} else {
-	// 		that.setData({
-	// 			showClearBtn: true
-	// 		})
-	// 	}
-	// },
+	//输入时监控
+	bindinput: function (event) {
+		var that = this;
+		var value = event.detail.value;
+		if (value == "" || value == undefined || value == null) {
+			that.setData({
+				showClearBtn: false
+			})
+		} else {
+			that.setData({
+				showClearBtn: true
+			})
+		}
+	},
 
 
 	// formSubmit: function (e) {
@@ -146,43 +147,54 @@ Page({
 	// },
 	lower: function (e) {
 		var that = this;
-		var posttotal = that.data.posttotal;
-		// if (posttotal > 9) {
+		var requireOnOff = that.data.requireOnOff;
+		var showLoading = that.data.showLoading;
 		var tid = that.data.threadinfo.tid;
 		var pn = that.data.pn + 1;
-		var threadShowLayerNew = 'https://xcxbbs.movshow.com/index.php/home/index/threadShowList/tid/' + tid + '/user_id/' + user_id + '/pn/' + pn;
+		var threadShowLayerNew = 'https://xcxbbs.movshow.com/index.php/home/index/threadShowList/tid/' + tid + '/pn/' + pn;
+		if (showLoading) {
+			if (requireOnOff) {//请求开关防止多次重复请求
+				that.setData({
+					requireOnOff: false,
+				})
+				wx.request({
+					url: threadShowLayerNew,
+					data: {
 
-		wx.request({
-			url: threadShowLayerNew,
-			data: {
-
-			},
-			header: {
-				'content-type': 'application/json'
-			},
-			success: function (res) {
-				//console.log(res.data)
-				var postarrayLength = res.data.postarray.length;
-				if (res.data.postarray.length > 0) {
-					that.setData({
-						postarray: that.data.postarray.concat(res.data.postarray),
-						showLoading: true,
-						pn: pn
-					})
-				} else {
-					that.setData({
-						showLoading: false,
-
-					})
-				}
+					},
+					header: {
+						'content-type': 'application/json'
+					},
+					success: function (res) {
+						if (res.data.status == 'true') {
+							that.setData({
+								postarray: that.data.postarray.concat(res.data.data),
+								showLoading: true,
+								pn: pn
+							})
+						} else {
+							that.setData({
+								showLoading: false,
+							})
+						}
+					},
+					fail: function () {
+						that.setData({
+							showLoading: false,
+						})
+					},
+					complete: function () {
+						that.setData({
+							requireOnOff: true,
+						})
+					}
+				})
+			}else{
+				console.log("相同请求未结束，不必再查询");
 			}
-		})
-		// } else {
-		// 	that.setData({
-		// 		showLoading: false,
-
-		// 	})
-		// }
+		} else {
+			console.log("已经没有内容，不必再查询");
+		}
 	},
 	onLoad: function (options) {
 		//帖子主体信息
@@ -214,6 +226,7 @@ Page({
 				} else {
 					that.setData({
 						threadinfo: res.data.data,
+						posttotal: res.data.data.posttotal,
 						recommendarray: res.data.data.recommendarray,
 						recommend_add: res.data.data.recommend_add
 					})
@@ -231,15 +244,43 @@ Page({
 					}
 				})
 			}
+		}),
+		//回复列表
+		wx.request({
+			url: "https://xcxbbs.movshow.com/index.php/home/index/threadShowList/tid/" + id + "/pn/0",
+			data: {
+				//	re_session: rd_session
+			},
+			header: {
+				'content-type': 'application/json'
+			},
+			success: function (res) {
+			//console.log(res.data.data);
+				if (res.data.status == "false") {
+					that.setData({
+						showLoading: false,
+						postarray: res.data.data,
+					})
+				} else {
+					if(res.data.data.length < 10 ){
+						var Loading = false;
+					}else{
+						var Loading = true;
+					}
+					that.setData({
+						showLoading:Loading,
+						postarray:res.data.data,
+					})
+				
+				}
+			}
 		})
-
-
-		// getApp().getUserInfo(function (userInfo) {
-		// 	that.setData({
-		// 		userInfo: userInfo,
-		// 		id: id
-		// 	});
-		// })
+		//获取用户信息	
+		getApp().getUserInfo(function (userInfo) {
+			that.setData({
+				userInfo: userInfo,
+			});
+		})
 
 	},
 	onReady: function () {
@@ -247,85 +288,14 @@ Page({
 	},
 	onShow: function () {
 		var that = this;
-		// var id = that.data.id;
-		// console.log(id);
-		// var myrecommend = false;
-		// //var rd_session = that.data.userInfo.rd_session;
-		// var URL_threadDetailNew = 'https://xcxbbs.movshow.com/index.php/home/index/postInfo/tid/' + id;
-		// wx.request({
-		// 	url: URL_threadDetailNew, //接口地址
-		// 	data: {
-		// 	//	re_session: rd_session
-		// 	},
-		// 	header: {
-		// 		'content-type': 'application/json'
-		// 	},
-		// 	success: function (res) {
-		// 		console.log(res.data);
-		// 		if (!res.data.status) {
-		// 			wx.showModal({
-		// 				title: '提示',
-		// 				content: res.data.msg,
-		// 			})
-		// 		}
-		// 		if (res.data.result == 0) {
-		// 			if (res.data.threadinfo.myrecommend == 0) {
-		// 				var myrecommend = false
-		// 			} else {
-		// 				var myrecommend = true
-		// 			}
-		// 		}
-
-		// 		that.setData({
-		// 			myrecommend: myrecommend,
-		// 			threadinfo: res.data.threadinfo,
-		// 			recommendarray: res.data.recommendarray,
-		// 			recommend_add: res.data.threadinfo.recommend_add
-		// 		})
-		// 	}
-		// }),
-		// wx.request({
-		// 	url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=threadShowLayerNew&tid=' + id + '&pn=' + 1,
-		// 	data: {},
-		// 	method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-		// 	// header: {}, // 设置请求的 header
-		// 	success: function (res) {
-		// 		var postarrayLength = res.data.postarray.length;
-		// 		if (res.data.posttotal < 11) {
-		// 			var showLoading = false;
-		// 			var scroll = false;
-		// 			var postHeight = postarrayLength * 85;
-		// 		} else {
-		// 			var showLoading = true;
-		// 			var scroll = true;
-		// 			var postHeight = 450;
-		// 		}
-
-		// 		if (postarrayLength > 0) {
-		// 			that.setData({
-		// 				scroll: scroll,
-		// 				showLoading: showLoading,
-		// 				postHeight: postHeight,
-		// 				postarrayLength: postarrayLength,
-		// 				postarray: res.data.postarray,
-		// 				posttotal: res.data.posttotal
-		// 			})
-		// 		} else {
-		// 			that.setData({
-		// 				scroll: scroll,
-		// 				showLoading: showLoading,
-		// 				postHeight: postHeight
-		// 			})
-		// 		}
-		// 	},
-
-		// }),
-
 		wx.getSystemInfo({
 			success: function (res) {
 				var windowWidth = res.windowWidth - 30;
+				var postHeight = (res.windowHeight) / 1.5;
 				that.setData({
-					windowWidth: windowWidth
+					windowWidth: windowWidth,
+					windowHeight: res.windowHeight,
+					postHeight: postHeight
 				})
 
 			}

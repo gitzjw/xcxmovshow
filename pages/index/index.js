@@ -3,19 +3,19 @@ Page({
   data: {
     userInfo: null
   },
-  mythreadNew:function(){
+  mythreadNew: function () {
     wx.navigateTo({
-      url:'../mythreadNew/mythreadNew'
+      url: '../mythreadNew/mythreadNew'
     })
   },
-  ver:function(){
-     wx.navigateTo({
+  ver: function () {
+    wx.navigateTo({
       url: '../logs/logs'
     })
   },
-  user:function(e){
-     var rd_session = this.data.userInfo.rd_session;
-     wx.navigateTo({
+  user: function (e) {
+    var rd_session = this.data.userInfo.rd_session;
+    wx.navigateTo({
       url: '../member/member?rd_session=' + rd_session
     })
   },
@@ -37,24 +37,25 @@ Page({
             success: function (res) {
               //发起网络请求
               var userInfo = res.userInfo;
+              that.globalData.userInfo = userInfo;
               wx.request({
-                url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=shop&m=onLogin',
+                url: 'https://xcxbbs.movshow.com/index.php/home/index/onLogin/',
                 data: {
-                  userInfo: userInfo,
+                  nickName: userInfo.nickName,
+                  avatarUrl: userInfo.avatarUrl,
                   code: code,
                 },
                 success: function (res) {
-                  //console.log(res.data)
-                  if (res.data.status == '200' && res.data.msg == 'success') {
-                    userInfo.rd_session = res.data.rd_session;
-                    userInfo.bbs_name = res.data.bbs_name;
-                    userInfo.uc_avatarUrl = res.data.uc_avatarUrl
+                  if (res.data.status == 'true' && res.data.code == '200') {
+                    //userInfo.rd_session = res.data.rd_session;
+                    userInfo.username = res.data.data.username;
+                    userInfo.imageUrl = res.data.data.imageUrl
                     app.globalData.userInfo = userInfo;
                     that.setData({
                       userInfo: userInfo
                     })
                     wx.showToast({
-                      title: '成功',
+                      title: '登录刷新成功',
                       icon: 'success',
                       duration: 1000
                     })
@@ -121,8 +122,8 @@ Page({
   onShareAppMessage: function () {
     // 用户点击右上角分享
     return {
-      title: '乐宠社区商城', // 分享标题
-      desc: '乐宠汇集社区浏览、商城服务于一体。让各位宠友快速便捷浏览在乐宠社区中的养宠心得；也可以上商城购物；', // 分享描述
+      title: '貓咪有約论坛', // 分享标题
+      desc: '全面专业的科学养猫知识；爱心领养救助中心；倡导一旦选择终生负责、不抛弃不放弃的养宠理念；', // 分享描述
       path: 'pages/home/home' // 分享路径
     }
   }

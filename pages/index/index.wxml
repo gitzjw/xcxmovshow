@@ -1,8 +1,8 @@
 <!--index.wxml-->
 <view>
   <view   class="userinfo" >
-    <image class="userinfo-avatar" src="../../image/lc.png" background-size="cover"></image>
-    <text class="userinfo-nickname">宠物尖货</text>
+    <image class="userinfo-avatar" src="{{userInfo.imageUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.username}}</text>
   </view>
 </view>
 <view class="list">

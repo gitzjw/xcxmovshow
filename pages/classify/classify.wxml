@@ -1,7 +1,6 @@
-<!--暂时没有想到如何实现玩物志的demo效果-->
 <view class="classify">
   <block wx:for="{{classesPic}}">
-    <navigator class="classify-nav" url="../detail/detail?id={{item.fid}}">
+    <view data-id="{{item.fid}}" bindtap="forumList" class="classify-nav">
       <view>
         <image class="classify-pic" src="{{item.picurl}}"></image>
       </view>
@@ -9,6 +8,6 @@
         <text class="classify-enname">{{item.enname}}</text>
         <text class="classify-name">{{item.name}}</text>
       </view>
-    </navigator>
+    </view>
   </block>
 </view>

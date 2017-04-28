@@ -111,26 +111,15 @@ Page({
       }
     ]
   },
+  forumList:function(e){
+    var id = e.currentTarget.dataset.id;
+
+    wx.navigateTo({
+      url:'../forumList/forumList?id='+id
+    })
+  },
   onLoad: function (options) {
-    //生命周期函数--监听页面加载
-    // var that = this;
-    // //分类因图片问题，直接写死
-    // wx.request({
-    //   url: 'https://xcxbbs.movshow.com/index.php/home/index/forumList',
-    //   data: {},
-    //   method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-    //   header: {
-    //     // 设置请求的 header，content-type 默认为 'application/json'
-    //   },
-    //   success: function (res) {
-    //     // success
-    //     console.log(res)
-    //     var classesPic = res.data.data;
-    //     that.setData({
-    //       classesPic: classesPic
-    //     })
-    //   }
-    // });
+  
   },
   onReady: function () {
     // 生命周期函数--监听页面初次渲染完成
