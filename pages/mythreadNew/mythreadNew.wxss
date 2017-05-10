@@ -49,8 +49,11 @@ image {
   width: 200px;
   padding: 10px;
 }
-
+.page_t1{
+  padding-left: 10px
+}
 .subject {
+ 
   font-size: 14px;
   box-sizing: border-box;
   align-items: center;

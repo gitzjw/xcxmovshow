@@ -5,7 +5,6 @@ var app = getApp()
 Page({
     data: {
         userInfo: null,
-        uc_avatarUrl: null,
         username: null,
         sexArray: ['保密', '男', '女'],
         sex: null,
@@ -20,102 +19,45 @@ Page({
         condition: false
 
     },
-    bindimg: function () {
-        var that = this;
-        var rd_session = that.data.rd_session;
-        wx.chooseImage({
-            count: 1, // 默认9
-            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-            success: function (res) {
-                // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-                var tempFilePaths = res.tempFilePaths
-                wx.uploadFile({
-                    url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=xcxChangePic',
-                    filePath: tempFilePaths[0],
-                    name: 'file',
-                    // header: {}, // 设置请求的 header
-                    formData: {
-                        re_session: rd_session
-                    }, // HTTP 请求中其他额外的 form data
-                    success: function (res) {
-                        var res = JSON.parse(res.data);
-                        //console.log(res)
-                        if (res.status == 200) {
-                            app.globalData.userInfo.uc_avatarUrl = res.pic;
-                            that.setData({
-                                uc_avatarUrl:res.pic
-                            })
-                            wx.showToast({
-                                title: '成功',
-                                icon: 'success',
-                                duration: 1000
-                            })
-                        } else {
-                            wx.showModal({
-                                showCancel: true,
-                                title: '提示',
-                                content: res.msg,
-                            })
-                        }
-
-                    },
-
-                })
-            }
-        })
-    },
 
     formSubmit: function (e) {
         var that = this;
         var username = e.detail.value.username;
-        var rd_session = that.data.rd_session;
+        var re_session = that.data.re_session;
         var sex = that.data.sex;
         var province = that.data.province;
         var city = that.data.city;
         var county = that.data.county;
-        if (!username) {
-            wx.showModal({
-                showCancel: true,
-                title: '提示',
-                content: "用戶名不能爲空",
-            })
-        } else {
-            wx.request({
-                url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=xcxUpdateuserinfodetail',
-                data: {
-                    re_session: rd_session,
-                    sex: sex,
-                    province: province,
-                    city: city,
-                    county: county,
+        wx.request({
+            url: 'https://xcxbbs.movshow.com/index.php/home/index/Updateuserinfo',
+            data: {
+                re_session: re_session,
+                sex: sex,
+                province: province,
+                city: city,
+                county: county,
 
-                },
-                method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-                // header: {}, // 设置请求的 header
-                success: function (res) {
-                    if (res.data.status == 200) {
-                        wx.showModal({
-                            showCancel: true,
-                            title: '提示',
-                            content: res.data.msg,
-                        })
-                    } else {
-                        wx.showModal({
-                            showCancel: true,
-                            title: '提示',
-                            content: res.data.msg,
-                        })
-                    }
-                },
-                fail: function () {
-                    // fail
-                },
-                complete: function () {
-                    // complete
+            },
+            method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+            // header: {}, // 设置请求的 header
+            success: function (res) {
+                if (res.data.status == true) {
+                    wx.showModal({
+                        showCancel: true,
+                        title: '提示',
+                        content: res.data.msg,
+                    })
+                } else {
+                    wx.showModal({
+                        showCancel: true,
+                        title: '提示',
+                        content: res.data.msg,
+                    })
                 }
-            })
-        }
+            },
+        
+        })
+
     },
     sexChange: function (e) {
         var sex = e.detail.value;
@@ -189,37 +131,42 @@ Page({
     },
     onLoad: function (e) {
         var that = this;
-        var rd_session = e.rd_session;
-        if (rd_session == null) {
+        var re_session = e.re_session;
+        if (re_session == null) {
             wx.showModal({
                 title: '提示',
                 content: "请到个人中心刷新登录",
             })
         } else {
             wx.request({
-                url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=getUserInfoByUid',
+                url: 'https://xcxbbs.movshow.com/index.php/home/index/getUserInfo/re_session/' + re_session,
                 data: {
-                    re_session: rd_session,
+
                 },
                 success: function (res) {
-                    if (res.data.status == 200) {
+                    //console.log(res.data);
+                    if (res.data.status == true) {
                         that.setData({
-                            uc_avatarUrl: res.data.uc_avatarUrl,
-                            username: res.data.username,
-                            sex: res.data.sex,
-                            rd_session: rd_session
+                            sex: res.data.data.sex,
+                            uc_avatarUrl: res.data.data.imageUrl,
+                            re_session: re_session
                         });
                     } else {
                         wx.showModal({
                             title: '提示',
-                            content: res.data.msg,
+                            content:  res.data.msg,
+                            success: function (res) {
+							wx.navigateBack({
+								delta: 1
+							})
+						}
                         })
                     }
                 },
                 complete: function (res) {
-                    var proRes = res.data.province;
-                    var citRes = res.data.city;
-                    var couRes = res.data.area;
+                    var proRes = res.data.data.province;
+                    var citRes = res.data.data.city;
+                    var couRes = res.data.data.area;
                     //地区列表设置
                     tcity.init(that);
                     var cityData = that.data.cityData;

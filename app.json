@@ -8,6 +8,7 @@
     "pages/forumList/forumList",
     "pages/settlement/index",
     "pages/member/member",
+    "pages/logs/logs",
     "pages/mythreadNew/mythreadNew",
     "pages/index/index"
     

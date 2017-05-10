@@ -1,0 +1,5 @@
+
+
+<view>
+  <image style=" width:{{Width}}px;height:{{height}}px" src="http://upload.movshow.com/forum/XCX/movshowbbs.jpg"></image>
+</view>

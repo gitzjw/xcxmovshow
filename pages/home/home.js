@@ -107,6 +107,12 @@ Page({
 	},
 	onLoad: function (options) {
 		var that = this
+		//获取用户信息	
+		getApp().getUserInfo(function (userInfo) {
+			that.setData({
+				userInfo: userInfo,
+			});
+		})
 		this.loadData(this.data.pn)
 	},
 	onReady: function () {
@@ -126,7 +132,7 @@ Page({
 			}
 		}),
 		wx.request({
-			url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=indexbanner',
+      url: 'https://xcxbbs.movshow.com/index.php/home/index/bannerUrls',
 			data: {
 
 			},
@@ -135,7 +141,7 @@ Page({
 			},
 			success: function (res) {
 				that.setData({
-					bannerUrls: res.data.array,
+					bannerUrls: res.data.data,
 				})
 			}
 		})

@@ -30,9 +30,10 @@ App({
                   },
                   success: function (res) {
                     //console.log(res.data)
-                    if (res.data.status == "true") {
+                    if (res.data.status == true) {
                       userInfo.username = res.data.data.username;
-                      userInfo.imageUrl = res.data.data.imageUrl
+                      userInfo.imageUrl = res.data.data.imageUrl;
+                      userInfo.re_session=res.data.data.re_session;
                       getApp().globalData.userInfo = userInfo;
                       typeof cb == "function" && cb(userInfo)
                     }

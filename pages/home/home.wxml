@@ -8,11 +8,8 @@
   <scroll-view class="sv" scroll-y="{{true}}" lower-threshold="8px" bindscrolltolower="scrolltolower">
     <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
       <block wx:for="{{bannerUrls}}" wx:key="">
-        <swiper-item wx:if="{{item.type == 'appthread'}}" data-id="{{item.link}}" bindtap="redirect">
-          <image src="{{item.coverpath}}" class="slide-image" />
-        </swiper-item>
-        <swiper-item wx:if="{{item.type == 'tagdetail'}}" data-id="{{item.link}}" bindtap="redirectActivity">
-          <image src="{{item.coverpath}}" class="slide-image" />
+        <swiper-item  data-id="{{item.tid}}" bindtap="redirect">
+          <image src="{{item.url}}" class="slide-image" />
         </swiper-item>
       </block>
     </swiper>

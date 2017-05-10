@@ -12,16 +12,16 @@ Page({
     tb_img: 80,
     forumNew: [
       {
-        fid: 496,
-        name: '汪星圈'
+        fid: 4,
+        name: '七嘴八舌'
       },
       {
-        fid: 568,
-        name: '喵星圈'
+        fid: 4,
+        name: '七嘴八舌'
       },
     ],
-    fid: 496,
-    forumNew_name: "汪星圈",
+    fid: 4,
+    forumNew_name: "七嘴八舌",
   },
   bindPickerChange: function (e) {
     var forumNew = this.data.forumNew;
@@ -35,9 +35,8 @@ Page({
     var that = this;
     var fid = that.data.fid;
     var allvalue = e.detail.value;
-    // var aidlist = that.data.aidlist;
-    var videoidlist = that.data.videoid;
-    var re_session = that.data.userInfo.rd_session;
+    var aidlist = that.data.aidlist;
+    var re_session = that.data.userInfo.re_session;
     if (!allvalue.title || !allvalue.text) {
       wx.showModal({
         title: '提示',
@@ -55,24 +54,27 @@ Page({
         var i = 0; //第几个
         this.uploadDIY(imgRes.tempFilePaths, successUp, failUp, i, length, aidlist, allvalue, re_session);
       } else {
-        this.formRequst(re_session, fid, allvalue, aidlist, videoidlist);
+        this.formRequst(re_session, fid, allvalue, aidlist);
       }
     }
   },
   //表单请求
-  formRequst: function (re_session, fid, allvalue, aidlist, videoidlist) {
+  formRequst: function (re_session, fid, allvalue, aidlist) {
     wx.request({
-      url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=threadPostNew&re_session=' + re_session + '&fid=' + fid,
+      url: 'https://xcxbbs.movshow.com/index.php/home/index/threadPost',
       data: {
-        data: allvalue,
+        fid: fid,
+        re_session: re_session,
+        title:allvalue.title,
+        content:allvalue.text,
         aidlist: aidlist,
-        videoidlist: videoidlist
       },
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
-        if (res.data.status == 200) {
+         //console.log(res); 
+        if (res.data.status == true) {
           wx.showToast({
             title: '成功',
             icon: 'success',
@@ -97,7 +99,7 @@ Page({
   chooseImgs: function (e) {
     var that = this;
     wx.chooseImage({
-      count: 5,
+      count: 4,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
@@ -110,17 +112,15 @@ Page({
   },
   //图片上传
   uploadDIY(filePaths, successUp, failUp, i, length, aidlist, allvalue, re_session) {
-    console.log(re_session)
     var that = this;
     var fid = that.data.fid;
-    var videoidlist = that.data.videoid;
     wx.showToast({
       title: '上传中',
       icon: 'loading',
       duration: 1000
     })
     wx.uploadFile({
-      url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=bbsUpdate',
+      url: 'https://xcxbbs.movshow.com/index.php/home/index/uploadthreadImage/re_session/'+re_session,
       filePath: filePaths[i],
       name: 'file',
       formData: {
@@ -128,14 +128,15 @@ Page({
       },
       success: (resp) => {
         var resp = JSON.parse(resp.data);//把字符串类型转换为JSON类型
-        if (resp.status == 200) {
+        //console.log(resp);
+        if (resp.status == true) {
           successUp++;
           if (aidlist) {
-            aidlist = aidlist + "," + resp.aid
+            aidlist = aidlist + "," + resp.data.aid
           } else {
-            aidlist = resp.aid
+            aidlist = resp.data.aid
           }
-        } else if (resp.status == 301) {
+        } else{
           failUp++;
         }
 
@@ -146,94 +147,26 @@ Page({
       complete: (resp) => {
         var resp = JSON.parse(resp.data);//把字符串类型转换为JSON类型
         i++;
-        if (resp.status == 404) {
-          wx.showModal({
-            title: '提示',
-            content: resp.msg,
-            showCancel: false,
-            success: function (res) {
-              if (res.confirm) {
-
-              }
-            }
-          })
-        } else {
+        //console.log(resp)
           if (i == length) {
+            var msg = '总共' + successUp + '张上传成功,' + failUp + '张上传失败！';
+            console.log(msg);
             that.setData({
               imgList: filePaths,
               aidlist: aidlist
 
             })
             //递归结束调用表单请求
-            this.formRequst(re_session, fid, allvalue, aidlist, videoidlist);
-            // wx.showModal({
-            //   title: '提示',
-            //   content: '总共' + successUp + '张上传成功,' + failUp + '张上传失败！',
-            //   showCancel: false,
-            //   success: function (res) {
-            //     if (res.confirm) {
-            //       console.log('用户点击确定')
-
-            //     }
-            //   }
-            // })
-          }
-          else {  //递归调用uploadDIY函数
+            this.formRequst(re_session, fid, allvalue, aidlist);
+          } else {  
+            //递归调用uploadDIY函数
             this.uploadDIY(filePaths, successUp, failUp, i, length, aidlist, allvalue, re_session);
           }
-        }
+
       },
     });
   },
-  //视频，暂时不用
-  chooseVideo: function () {
-    var that = this
-    wx.chooseVideo({
-      sourceType: ['camera'], // album 从相册选视频，camera 使用相机拍摄
-      maxDuration: 10, // 拍摄视频最长拍摄时间，单位秒。最长支持60秒
-      camera: ['front', 'back'],
-      success: function (res) {
-        wx.showToast({
-          title: '上传中',
-          icon: 'loading',
-          duration: 4000
-        })
-        wx.uploadFile({
-          url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=bbsUpdateVideo',
-          filePath: res.tempFilePath,
-          name: 'file',
-          formData: {
-            're_session': that.data.userInfo.rd_session,
-          },
-          success: function (res) {
-            var data = JSON.parse(res.data);
-            //console.log(data)
-            if (data.status == 200) {
-              //刷新登录re_session
-              that.setData({
-                videoid: data.videoid,
-                videoSrc: data.url,
-                video: 1
-              })
-            } else {
-              wx.showModal({
-                title: '提示',
-                content: data.msg,
-                showCancel: false,
-                success: function (res) {
-                  if (res.confirm) {
-                    // console.log('用户点击确定，后期改为主动触发刷新')
-                  }
-                }
-              })
-            }
 
-          }
-        })
-
-      },
-    })
-  },
 
   onLoad: function (options) {
     // 生命周期函数--监听页面加载
@@ -265,7 +198,7 @@ Page({
     }),
 
       wx.request({
-        url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=fornumNewList', //接口地址
+        url: 'https://xcxbbs.movshow.com/index.php/home/index/forumPostList/', //接口地址
         data: {
 
         },
@@ -273,9 +206,8 @@ Page({
           'content-type': 'application/json'
         },
         success: function (res) {
-          // console.log(res.data);
           that.setData({
-            forumNew: res.data
+            forumNew: res.data.data
           })
         }
       })

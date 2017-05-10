@@ -2,16 +2,16 @@
 <!--index.wxml-->
 <form bindsubmit="formSubmit">
   <view>
-    <view bindtap="bindimg" class="userinfo">
-      <image class="userinfo-avatar" src="{{uc_avatarUrl}}" background-size="cover"></image>
+    <view  class="userinfo">
+      <image class="userinfo-avatar" src="" background-size="cover"></image>
     
     </view>
   </view>
   <view class="list">
-    <view class="item nc" bindtap="user">
+    <!--<view class="item nc" bindtap="user">
       <image src="../../image/zl.png" />社区昵称：
       <input disabled="true" name="username" value="{{username}}" maxlength="15" />
-    </view>
+    </view>-->
     <view class="item">
       <picker bindchange="sexChange" value="{{sex}}" range="{{sexArray}}">
         <view class="picker">

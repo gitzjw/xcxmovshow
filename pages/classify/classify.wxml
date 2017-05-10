@@ -1,13 +1,16 @@
 <view class="classify">
   <block wx:for="{{classesPic}}">
-    <view data-id="{{item.fid}}" bindtap="forumList" class="classify-nav">
+  <!--<view >{{item.name}}</view>-->
+  <view wx:for="{{item.list}}"  wx:key="ind" wx:for-item="list">
+    <view data-id="{{list.fid}}" bindtap="forumList" class="classify-nav">
       <view>
-        <image class="classify-pic" src="{{item.picurl}}"></image>
+        <image class="classify-pic" src="{{list.picurl}}"></image>
       </view>
       <view>
-        <text class="classify-enname">{{item.enname}}</text>
-        <text class="classify-name">{{item.name}}</text>
+        <text class="classify-enname">{{list.enname}}</text>
+        <text class="classify-name">{{list.name}}</text>
       </view>
+    </view>
     </view>
   </block>
 </view>

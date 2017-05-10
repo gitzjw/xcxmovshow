@@ -48,7 +48,7 @@ Page({
 					},
 					success: function (res) {
 
-						if (res.data.status == 'true') {
+						if (res.data.status == true) {
 							that.setData({
 								array: that.data.array.concat(res.data.data),
 								showLoading: true,

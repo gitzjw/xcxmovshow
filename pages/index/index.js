@@ -14,15 +14,55 @@ Page({
     })
   },
   user: function (e) {
-    var rd_session = this.data.userInfo.rd_session;
+    var re_session = this.data.userInfo.re_session;
     wx.navigateTo({
-      url: '../member/member?rd_session=' + rd_session
+      url: '../member/member?re_session=' + re_session
     })
   },
-  addressList: function (e) {
-    var rd_session = this.data.userInfo.rd_session;
-    wx.navigateTo({
-      url: '../addressList/index?rd_session=' + rd_session
+  //头像
+  bindimg: function () {
+    var that = this;
+    var userInfo = that.data.userInfo;
+    var re_session = userInfo.re_session;
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        var tempFilePaths = res.tempFilePaths
+        wx.uploadFile({
+          url: 'https://xcxbbs.movshow.com/index.php/home/index/uploadChangePic/re_session/' + re_session,
+          filePath: tempFilePaths[0],
+          name: 'file',
+          // header: {}, // 设置请求的 header
+          formData: {
+          }, // HTTP 请求中其他额外的 form data
+          success: function (res) {
+            var res = JSON.parse(res.data);
+            if (res.status == true) {
+                userInfo.imageUrl=res.data.imageUrl;
+                app.globalData.userInfo = userInfo;
+                that.setData({
+                    userInfo:userInfo
+                })
+                wx.showToast({
+                    title: '成功',
+                    icon: 'success',
+                    duration: 1000
+                })
+            } else {
+                wx.showModal({
+                    showCancel: true,
+                    title: '提示',
+                    content: res.msg,
+                })
+            }
+
+          },
+
+        })
+      }
     })
   },
 
@@ -37,7 +77,6 @@ Page({
             success: function (res) {
               //发起网络请求
               var userInfo = res.userInfo;
-              that.globalData.userInfo = userInfo;
               wx.request({
                 url: 'https://xcxbbs.movshow.com/index.php/home/index/onLogin/',
                 data: {
@@ -46,16 +85,16 @@ Page({
                   code: code,
                 },
                 success: function (res) {
-                  if (res.data.status == 'true' && res.data.code == '200') {
-                    //userInfo.rd_session = res.data.rd_session;
+                  if (res.data.status == true && res.data.code == 200) {
                     userInfo.username = res.data.data.username;
-                    userInfo.imageUrl = res.data.data.imageUrl
-                    app.globalData.userInfo = userInfo;
+                    userInfo.imageUrl = res.data.data.imageUrl;
+                    userInfo.re_session = res.data.data.re_session;
+                    getApp().globalData.userInfo = userInfo;
                     that.setData({
                       userInfo: userInfo
                     })
                     wx.showToast({
-                      title: '登录刷新成功',
+                      title: '刷新成功',
                       icon: 'success',
                       duration: 1000
                     })
@@ -100,22 +139,6 @@ Page({
   },
   onShow: function () {
     // 生命周期函数--监听页面显示
-
-  },
-  onHide: function () {
-    // 生命周期函数--监听页面隐藏
-
-  },
-  onUnload: function () {
-    // 生命周期函数--监听页面卸载
-
-  },
-  onPullDownRefresh: function () {
-    // 页面相关事件处理函数--监听用户下拉动作
-
-  },
-  onReachBottom: function () {
-    // 页面上拉触底事件的处理函数
 
   },
 

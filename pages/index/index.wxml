@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view>
   <view   class="userinfo" >
-    <image class="userinfo-avatar" src="{{userInfo.imageUrl}}" background-size="cover"></image>
+    <image bindtap="bindimg" class="userinfo-avatar" src="{{userInfo.imageUrl}}" background-size="cover"></image>
     <text class="userinfo-nickname">{{userInfo.username}}</text>
   </view>
 </view>
@@ -12,14 +12,6 @@
     </view>
     <view class="item" bindtap="mythreadNew">
         <image src="../../image/tz.png"/>我的帖子
-        <text class="jump">〉</text>
-    </view>
-    <view class="item" bindtap="order">
-        <image src="../../image/dingdan.jpg"/>我的订单
-        <text class="jump">〉</text>
-    </view>
-    <view class="item" bindtap="addressList">
-        <image src="../../image/ding.png"/>收货地址
         <text class="jump">〉</text>
     </view>
      <view class="item" bindtap="ver">

@@ -2,11 +2,13 @@
 var app = getApp();
 Page({
 	data: {
-		pn: 1,
+		pn: 0,
 		list: [],
 		listzz: [],
-		showMore: false,
+		hint: false,
 		showLoading: true,
+		lowerLoading: false,
+		lowerhint: false,
 		bannerUrls: [],
 		indicatorDots: true,
 		autoplay: true,
@@ -26,7 +28,7 @@ Page({
 		var id = e.currentTarget.dataset.id;
 		var key = e.currentTarget.dataset.key;
 		var listzz = that.data.listzz;
-		var re_session = that.data.userInfo.rd_session;
+		var re_session = that.data.userInfo.re_session;
 		//触摸时间距离页面打开的毫秒数  
 		var touchTime = that.data.touch_end - that.data.touch_start
 		// console.log(touchTime)
@@ -38,16 +40,17 @@ Page({
 				success: function (res) {
 					if (res.confirm) {
 						wx.request({
-							url: 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=delthread&tid=' + id,
+							url: 'https://xcxbbs.movshow.com/index.php/home/index/delthread',
 							data: {
+								tid:id,
 								re_session: re_session
 							},
 							header: {
 								'content-type': 'json'
 							},
 							success: function (res) {
-								console.log(res.data)
-								if (res.data.status == 200) {
+								//console.log(res.data)
+								if (res.data.status == true) {
 									listzz.splice(key, 1);
 									that.setData({
 										listzz: listzz
@@ -106,38 +109,55 @@ Page({
 	},
 	loadData: function (pn) {
 		var that = this;
-		var re_session = that.data.userInfo.rd_session;
-		var count = pn * 10;
-		var mythreadNew = 'https://lechongwu.cn/plugins/API.v1.0/?&a=bbs&m=mythreadNew&pn=' + pn;
+		var re_session = that.data.userInfo.re_session;
+		var mythreadNew = 'https://xcxbbs.movshow.com/index.php/home/index/mythreadNew';
+		if (pn > 0) {
+			that.setData({
+				lowerLoading: true,
+			})
+		}
+
 		wx.request({
 			url: mythreadNew,
 			data: {
+				pn: pn,
 				re_session: re_session
 			},
 			header: {
 				'content-type': 'json'
 			},
 			success: function (res) {
-				console.log(res.data)
-				if(res.data.array.length >9){
-					var showMore = true
-				}else{
-					var showMore = false
-				}
-				if (res.data.status == 200 ) {
-					that.setData({
-						listzz: that.data.listzz.concat(res.data.array),
-						showLoading: false,
-						showMore:showMore,
-						pn: pn + 1
-					})
+				if (pn == 0) {
+					if (res.data.status == true) {
+						that.setData({
+							listzz: that.data.listzz.concat(res.data.data),
+							showLoading: false,
+							pn: pn + 1
+						})
+					} else {
+						that.setData({
+							showLoading: false,
+							hint: true
+						})
+					}
 				} else {
-					that.setData({
-						showMore: false,
-						showLoading:false
-					})
+					if (res.data.status == true) {
+						that.setData({
+							listzz: that.data.listzz.concat(res.data.data),
+							lowerLoading: false,
+							pn: pn + 1
+						})
+					} else {
+						that.setData({
+							lowerLoading: false,
+							lowerhint: true
+
+						})
+					}
 				}
+
 			}
+
 		})
 	},
 	onLoad: function (options) {

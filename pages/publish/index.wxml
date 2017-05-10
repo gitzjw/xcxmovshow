@@ -9,7 +9,7 @@
     <view class="qz">
       <picker bindchange="bindPickerChange" range-key="name" value="{{name}}" range="{{forumNew}}">
         <view>
-        选择发送的圈子 :  <text>{{forumNew_name}}</text>
+        选择发送的版块 :  <text>{{forumNew_name}}</text>
         </view>
       
       </picker>
